@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Data
 @AllArgsConstructor
-public class LogicTimeWord {
+public class LogicTimeWord implements Cloneable {
     private List<LogicAction> actionList;
 
     public int size() {
@@ -35,6 +35,16 @@ public class LogicTimeWord {
         } catch (Exception e) {
             return emptyWord();
         }
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        LogicTimeWord timeWord = (LogicTimeWord)super.clone();
+        timeWord.actionList = new ArrayList<>();
+        for(LogicAction action : actionList) {
+            timeWord.actionList.add((LogicAction)action.clone());
+        }
+        return timeWord;
     }
 
     @Override

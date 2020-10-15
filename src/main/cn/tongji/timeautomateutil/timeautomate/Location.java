@@ -33,13 +33,9 @@ public class Location implements Cloneable {
         this.id = id;
     }
 
-    public Object clone() {
-        Location o = null;
-        try {
-            o = (Location) super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+    public Object clone() throws CloneNotSupportedException {
+        Location o = (Location) super.clone();
+        o.logicTimeWord = (LogicTimeWord)logicTimeWord.clone();
         return o;
     }
 

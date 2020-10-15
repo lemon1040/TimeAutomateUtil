@@ -2,7 +2,7 @@ package tongji.timeautomateutil.timeautomate;
 
 import java.util.Objects;
 
-public class Clock {
+public class Clock implements Cloneable {
     private String name;
     private double value;
 
@@ -20,6 +20,11 @@ public class Clock {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     @Override

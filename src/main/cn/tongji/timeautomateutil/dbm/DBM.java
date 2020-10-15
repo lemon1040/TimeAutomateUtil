@@ -6,7 +6,6 @@ import tongji.timeautomateutil.timeautomate.TimeGuard;
 import tongji.timeautomateutil.timeautomate.TimeGuardElement;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Data
@@ -93,10 +92,10 @@ public class DBM {
      * 包含关系判断
      * 判断传入的dbm是否被当前dbm包含
      */
-    public boolean include(DBM dbm){
-        for(int i = 0; i < size(); i++){
-            for(int j = 0; j < size(); j++){
-                if(matrix[i][j].compareTo(dbm.matrix[i][j]) < 0){
+    public boolean include(DBM dbm) {
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j < size(); j++) {
+                if (matrix[i][j].compareTo(dbm.matrix[i][j]) < 0) {
                     return false;
                 }
             }
@@ -118,72 +117,72 @@ public class DBM {
 
 
     //up操作,把上限变为正无穷
-    public void up(){
-        for(int i = 1; i <size();i++ ){
-            matrix[i][0] = new Value(Integer.MAX_VALUE,false);
+    public void up() {
+        for (int i = 1; i < size(); i++) {
+            matrix[i][0] = new Value(Integer.MAX_VALUE, false);
         }
     }
 
     //and操作
-    public void and(TimeGuardElement timeGuardElement){
+    public void and(TimeGuardElement timeGuardElement) {
 
         int index = clockList.indexOf(timeGuardElement.getClock());
-        Value upperBound = new Value(timeGuardElement.getUpperBound(),!timeGuardElement.isUpperBoundOpen());
-        if(upperBound.compareTo(matrix[index+1][0]) < 0){
-            matrix[index+1][0] = upperBound;
+        Value upperBound = new Value(timeGuardElement.getUpperBound(), !timeGuardElement.isUpperBoundOpen());
+        if (upperBound.compareTo(matrix[index + 1][0]) < 0) {
+            matrix[index + 1][0] = upperBound;
         }
-        Value lowerBound = new Value(timeGuardElement.getLowerBound()*(-1),!timeGuardElement.isLowerBoundOpen());
-        if(lowerBound.compareTo(matrix[0][index+1]) < 0){
-            matrix[0][index+1] = lowerBound;
+        Value lowerBound = new Value(timeGuardElement.getLowerBound() * (-1), !timeGuardElement.isLowerBoundOpen());
+        if (lowerBound.compareTo(matrix[0][index + 1]) < 0) {
+            matrix[0][index + 1] = lowerBound;
         }
     }
 
     //and操作，TaTimeGuard
-    public void and(TimeGuard timeGuards){
-        for(TimeGuardElement guard : timeGuards.getTimeGuardElements()){
+    public void and(TimeGuard timeGuards) {
+        for (TimeGuardElement guard : timeGuards.getTimeGuardElements()) {
             and(guard);
         }
     }
 
     //reset操作
-    public void reset(Clock c){
-        int index = clockList.indexOf(c)+1;
-        for(int i = 0; i < size(); i++){
+    public void reset(Clock c) {
+        int index = clockList.indexOf(c) + 1;
+        for (int i = 0; i < size(); i++) {
             matrix[index][i] = matrix[0][i];
             matrix[i][index] = matrix[i][0];
         }
     }
 
     //reset操作，reset一个集合
-    public void reset(Set<Clock> clockSet){
-        for (Clock c : clockSet){
+    public void reset(Set<Clock> clockSet) {
+        for (Clock c : clockSet) {
             reset(c);
         }
     }
 
-    public DBM copy(){
+    public DBM copy() {
         Value[][] matrix1 = new Value[size()][size()];
-        for(int i = 0; i < size(); i++){
-            for(int j = 0; j < size(); j++){
-                matrix1[i][j] = new Value(matrix[i][j].getValue(),matrix[i][j].isEqual());
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j < size(); j++) {
+                matrix1[i][j] = new Value(matrix[i][j].getValue(), matrix[i][j].isEqual());
             }
         }
-        return new DBM(clockList,matrix1);
+        return new DBM(clockList, matrix1);
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("the dbm matrix is:\n");
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 3; j++){
-                if(matrix[i][j].getValue() == Integer.MAX_VALUE){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (matrix[i][j].getValue() == Integer.MAX_VALUE) {
                     sb.append("∞").append("<").append(" \t");
-                }else {
+                } else {
                     sb.append(matrix[i][j].getValue());
-                    if(matrix[i][j].isEqual()){
+                    if (matrix[i][j].isEqual()) {
                         sb.append(" <=");
-                    }else {
+                    } else {
                         sb.append(" <");
                     }
                     sb.append(" \t");

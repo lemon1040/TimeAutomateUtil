@@ -1,4 +1,4 @@
 package tongji.timeautomateutil.timeword;
 
-public interface Action {
+public interface Action extends Cloneable{
 }

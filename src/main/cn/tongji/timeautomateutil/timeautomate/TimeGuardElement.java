@@ -10,7 +10,7 @@ import tongji.timeautomateutil.timeword.LogicAction;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TimeGuardElement {
+public class TimeGuardElement implements Cloneable {
 
     public static final int MAX_TIME = 1000;
 
@@ -148,6 +148,11 @@ public class TimeGuardElement {
             stringBuilder.append("]");
         }
         return stringBuilder.toString();
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     public TimeGuardElement copy() {
