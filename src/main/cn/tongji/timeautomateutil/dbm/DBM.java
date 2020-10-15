@@ -1,22 +1,32 @@
 package tongji.timeautomateutil.dbm;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import tongji.timeautomateutil.timeautomate.Clock;
 import tongji.timeautomateutil.timeautomate.TimeGuard;
 import tongji.timeautomateutil.timeautomate.TimeGuardElement;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Data
 /**
  * 表示一个zone 由一组时钟值和时钟约束矩阵组成
  */
-public class DBM {
-    private final List<Clock> clockList;
+public class DBM implements Cloneable{
+    @Getter
+    private List<Clock> clockList;
+
+    @Getter
+    @Setter
     private Value[][] matrix;
 
     public DBM(List<Clock> clockList, Value[][] matrix) {
+        if (matrix.length != clockList.size() + 1) {
+            throw new RuntimeException("Illegal input for building DBM!!!!!\n " +
+                    "matrix.length should equal to clockList.size() + 1");
+        }
         this.clockList = clockList;
         this.matrix = matrix;
     }
@@ -106,9 +116,9 @@ public class DBM {
     /**
      * 判断dbm矩阵的第i项和第j项时钟的新约束是否可以应用到当前dbm上
      */
-    public boolean satisfied(int i, int j, Value value) {
+    public boolean satisfied(int i, int j, Value value) throws CloneNotSupportedException {
         // 复制dbm数组，并将value应用到复制好的dbm数组
-        DBM cache = copy();
+        DBM cache = clone();
         Value[][] copyMatrix = cache.getMatrix();
         copyMatrix[i][j] = Value.add(copyMatrix[i][j], value);
         // 判断形成的新dbm数组是否满足一致性
@@ -160,22 +170,27 @@ public class DBM {
         }
     }
 
-    public DBM copy() {
-        Value[][] matrix1 = new Value[size()][size()];
+    public DBM clone() throws CloneNotSupportedException {
+        DBM o = (DBM)super.clone();
+        o.clockList = new ArrayList<>(clockList.size());
+        o.matrix =  new Value[size()][size()];
+        for(Clock clock : clockList) {
+            o.clockList.add(clock.clone());
+        }
         for (int i = 0; i < size(); i++) {
             for (int j = 0; j < size(); j++) {
-                matrix1[i][j] = new Value(matrix[i][j].getValue(), matrix[i][j].isEqual());
+                o.matrix[i][j] = matrix[i][j].clone();
             }
         }
-        return new DBM(clockList, matrix1);
+        return o;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("the dbm matrix is:\n");
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j < size(); j++) {
                 if (matrix[i][j].getValue() == Integer.MAX_VALUE) {
                     sb.append("∞").append("<").append(" \t");
                 } else {

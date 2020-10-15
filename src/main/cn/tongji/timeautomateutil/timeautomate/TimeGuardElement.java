@@ -151,12 +151,10 @@ public class TimeGuardElement implements Cloneable {
     }
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
-    public TimeGuardElement copy() {
-        return new TimeGuardElement(lowerBoundOpen, upperBoundOpen, lowerBound, upperBound, clock);
+    public TimeGuardElement clone() throws CloneNotSupportedException {
+        TimeGuardElement o =  (TimeGuardElement)super.clone();
+        o.clock = clock.clone();
+        return o;
     }
 
 }

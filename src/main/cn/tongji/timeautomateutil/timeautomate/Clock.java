@@ -3,7 +3,7 @@ package tongji.timeautomateutil.timeautomate;
 import java.util.Objects;
 
 public class Clock implements Cloneable {
-    private String name;
+    private final String name;
     private double value;
 
     public Clock(String name){
@@ -23,8 +23,8 @@ public class Clock implements Cloneable {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public Clock clone() throws CloneNotSupportedException {
+        return (Clock)super.clone();
     }
 
     @Override

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Value implements Comparable<Value> {
+public class Value implements Comparable<Value>, Cloneable {
     private int value;
     private boolean equal;
 
@@ -30,5 +30,10 @@ public class Value implements Comparable<Value> {
             }
         }
         return 1;
+    }
+
+    @Override
+    public Value clone() throws CloneNotSupportedException {
+        return (Value)super.clone();
     }
 }

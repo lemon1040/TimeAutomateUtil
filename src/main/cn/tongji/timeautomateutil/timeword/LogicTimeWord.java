@@ -38,11 +38,11 @@ public class LogicTimeWord implements Cloneable {
     }
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
+    public LogicTimeWord clone() throws CloneNotSupportedException {
         LogicTimeWord timeWord = (LogicTimeWord)super.clone();
         timeWord.actionList = new ArrayList<>();
         for(LogicAction action : actionList) {
-            timeWord.actionList.add((LogicAction)action.clone());
+            timeWord.actionList.add(action.clone());
         }
         return timeWord;
     }

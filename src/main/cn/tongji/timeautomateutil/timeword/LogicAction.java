@@ -11,20 +11,19 @@ public class LogicAction implements Action {
     private boolean reset;
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public LogicAction clone() throws CloneNotSupportedException {
+        return (LogicAction)super.clone();
     }
 
     @Override
     public String toString(){
-        String stringBuilder = "(" +
+        return "(" +
                 getSymbol() +
                 "," +
                 getValue() +
                 "," +
                 (isReset() ? "r" : "n") +
                 ")";
-        return stringBuilder;
     }
 
 }
