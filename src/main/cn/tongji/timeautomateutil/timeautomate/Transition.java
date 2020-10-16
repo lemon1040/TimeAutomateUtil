@@ -12,8 +12,8 @@ import java.util.Set;
 public class Transition implements Cloneable {
     private Location sourceLocation;
     private Location targetLocation;
-    private String symbol;
     private TimeGuard timeGuard;
+    private String symbol;
     private Set<Clock> resetClockSet;
 
     public boolean isReset(Clock clock) {

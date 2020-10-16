@@ -10,7 +10,7 @@ import tongji.timeautomateutil.timeword.LogicAction;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TimeGuardElement implements Cloneable {
+public class TimeGuardElement implements Cloneable, Comparable<TimeGuardElement> {
 
     public static final int MAX_TIME = 1000;
 
@@ -157,4 +157,20 @@ public class TimeGuardElement implements Cloneable {
         return o;
     }
 
+    @Override
+    public int compareTo(TimeGuardElement o) {
+        int var1 = getClock().getName().compareTo(o.getClock().getName());
+        if(var1 != 0){
+            return var1;
+        }
+        int var3 = getLowerBound() - o.getLowerBound();
+        if(var3 !=0){
+            return var3;
+        }
+        int var4 = getUpperBound() - o.getUpperBound();
+        if(var4 != 0){
+            return var4;
+        }
+        return -1;
+    }
 }

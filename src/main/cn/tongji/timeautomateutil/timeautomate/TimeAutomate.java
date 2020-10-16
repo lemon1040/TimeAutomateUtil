@@ -5,20 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class TimeAutomate {
     private String name;
-    private Set<Clock> clockSet;
+    private Map<String, Clock> clockSet;
     private Set<String> sigma;
     private List<Location> locationList;
-    private List<Transition> taTransitionList;
+    private List<Transition> transitionList;
 
 
     public Location getInitLocation() {
@@ -43,7 +40,7 @@ public class TimeAutomate {
     public List<Transition> getTransitions(Location fromLocation,
                                            String symbol,
                                            Location toLocation) {
-        List<Transition> list = new ArrayList<>(taTransitionList);
+        List<Transition> list = new ArrayList<>(transitionList);
         Iterator<Transition> iterator = list.iterator();
         while (iterator.hasNext()) {
             Transition t = iterator.next();
@@ -94,8 +91,8 @@ public class TimeAutomate {
         }
         sb.deleteCharAt(sb.length() - 1).append("]\n\t\"tran\":{\n");
 
-        for (int i = 0; i < getTaTransitionList().size(); i++) {
-            Transition t = getTaTransitionList().get(i);
+        for (int i = 0; i < getTransitionList().size(); i++) {
+            Transition t = getTransitionList().get(i);
             sb.append("\t\t\"").append(i).append(t.toString()).append(",\n");
         }
         sb.deleteCharAt(sb.length() - 2);
